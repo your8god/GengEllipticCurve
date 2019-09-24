@@ -114,7 +114,7 @@ public class PrimeNumber
             return false;
     }
 
-    private BigInteger powMod(BigInteger a, BigInteger n, BigInteger m)
+    public static BigInteger powMod(BigInteger a, BigInteger n, BigInteger m)
     {
         a = a.mod(m);
         BigInteger res = BigInteger.ONE;
