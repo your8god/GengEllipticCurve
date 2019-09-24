@@ -13,8 +13,10 @@ public class Decomposition
         int legSymbol = legendreSymbol(BigInteger.valueOf(D), p);
         if (legSymbol == 1)
         {
-            BigInteger x = stepTwo(BigInteger.valueOf(D), p);
-            System.out.println(x);
+            BigInteger x1 = stepTwo(BigInteger.valueOf(D), p),
+                    x2 = p.subtract(x1);
+
+            System.out.println(x1 + "\n" + x2);
         }
     }
 
@@ -161,10 +163,10 @@ public class Decomposition
             int m = 0;
             while (true)
             {
-                if (m == 0)
+                if (m == 0) {
                     if (b.mod(p).equals(BigInteger.ONE))
                         break;
-
+                }
                 else
                     {
                         long deg = 1;
