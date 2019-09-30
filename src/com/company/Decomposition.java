@@ -7,6 +7,7 @@ import static com.company.PrimeNumber.powMod;
 public class Decomposition
 {
     BigInteger a, b;
+    BigInteger ui = null;
 
     Decomposition(int D, BigInteger p)
     {
@@ -15,9 +16,33 @@ public class Decomposition
         {
             BigInteger x1 = stepTwo(BigInteger.valueOf(D), p),
                     x2 = p.subtract(x1);
+            System.out.println(x1 + "  " + x2);
 
-            System.out.println(x1 + "\n" + x2);
+           /* System.out.println(x1 + "\n" + x2);
+            boolean f = check(x1, p);
+            boolean f1 = check(x2, p);*/
+
         }
+    }
+
+    private boolean check(BigInteger u, BigInteger p)
+    {
+        BigInteger ui = u, mi = p;
+        for (int i = 0; i < 500; i++)
+        {
+            mi = (pow(ui, BigInteger.TWO).add(BigInteger.ONE)).divide(mi);
+            if (ui.mod(mi).compareTo(mi.subtract(ui.mod(mi))) == -1)
+                ui = ui.mod(mi);
+            else
+                ui = mi.subtract(ui.mod(mi));
+
+            if (mi.equals(BigInteger.ONE)) {
+
+                this.ui = ui;
+                return true;
+            }
+        }
+        return false;
     }
 
     private BigInteger GCD(BigInteger a, BigInteger b)
@@ -140,52 +165,34 @@ public class Decomposition
         }
 
         BigInteger q = p.subtract(BigInteger.ONE);
-        BigInteger n = BigInteger.ZERO;
+        BigInteger s = BigInteger.ZERO;
         while (q.mod(BigInteger.TWO).equals(BigInteger.ZERO)) {
             q = q.divide(BigInteger.TWO);
-            n = n.add(BigInteger.ONE);
+            s = s.add(BigInteger.ONE);
         }
 
-        BigInteger r = n, z = BigInteger.ONE;
-        for (BigInteger c = BigInteger.TWO; !c.equals(p.subtract(BigInteger.ONE)); c = c.add(BigInteger.ONE))
-            if (legendreSymbol(c, p) == -1)
+        BigInteger c = BigInteger.ONE;
+        for (BigInteger z = BigInteger.TWO; !z.equals(p.subtract(BigInteger.ONE)); z = z.add(BigInteger.ONE))
+            if (legendreSymbol(z, p) == -1)
             {
-                z = powMod(c, q, p);
+                c = powMod(z, q, p);
                 break;
             }
 
-        BigInteger t = powMod(a, (q.subtract(BigInteger.ONE)).divide(BigInteger.TWO), p),
-                x = a.multiply(t).mod(p),
-                b = x.multiply(t).mod(p);
+        BigInteger r = powMod(a, (q.add(BigInteger.ONE)).divide(BigInteger.TWO), p),
+                t = powMod(a, q, p), M = s;
 
-        while (!x.mod(p).equals(BigInteger.ONE))
+        while(!t.mod(p).equals(BigInteger.ONE))
         {
-            int m = 0;
-            while (true)
-            {
-                if (m == 0) {
-                    if (b.mod(p).equals(BigInteger.ONE))
-                        break;
-                }
-                else
-                    {
-                        long deg = 1;
-                        for (int i = 0; i < m; i++)
-                            deg *= 2;
-
-                        if (powMod(b, BigInteger.valueOf(deg), p).equals(BigInteger.ONE))
-                            break;
-                    }
-                m++;
-            }
-
-            t = powMod(z, pow(BigInteger.TWO, r.subtract(BigInteger.valueOf(m - 1))), p);
-            z = powMod(t, BigInteger.TWO, p);
-            x = x.multiply(t).mod(p);
-            b = b.multiply(z).mod(p);
-            r = BigInteger.valueOf(m);
+            BigInteger S_ = BigInteger.ONE;
+            while(!powMod(t, pow(BigInteger.TWO, S_), p).equals(BigInteger.ONE))
+                S_ = S_.add(BigInteger.ONE);
+            BigInteger w = powMod(c, pow(BigInteger.TWO, s.subtract(S_).subtract(BigInteger.ONE)), p);
+            r = r.multiply(w).mod(p);
+            t = t.multiply(pow(w, BigInteger.TWO)).mod(p);
+            s = S_;
         }
-        return x;
-    }
 
+        return r;
+    }
 }
