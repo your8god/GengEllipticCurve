@@ -1,48 +1,26 @@
 package com.company;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 
 import static com.company.PrimeNumber.powMod;
 
 public class Decomposition
 {
     BigInteger a, b;
-    BigInteger ui = null;
 
     Decomposition(int D, BigInteger p)
     {
         int legSymbol = legendreSymbol(BigInteger.valueOf(D), p);
         if (legSymbol == 1)
         {
-            BigInteger x1 = stepTwo(BigInteger.valueOf(D), p),
+            BigInteger x1 = sqrt(BigInteger.valueOf(D), p),
                     x2 = p.subtract(x1);
             System.out.println(x1 + "  " + x2);
 
-           /* System.out.println(x1 + "\n" + x2);
-            boolean f = check(x1, p);
-            boolean f1 = check(x2, p);*/
-
+            result(x1, x2, p, 1, false);
+            System.out.println(a + "   " + b);
         }
-    }
-
-    private boolean check(BigInteger u, BigInteger p)
-    {
-        BigInteger ui = u, mi = p;
-        for (int i = 0; i < 500; i++)
-        {
-            mi = (pow(ui, BigInteger.TWO).add(BigInteger.ONE)).divide(mi);
-            if (ui.mod(mi).compareTo(mi.subtract(ui.mod(mi))) == -1)
-                ui = ui.mod(mi);
-            else
-                ui = mi.subtract(ui.mod(mi));
-
-            if (mi.equals(BigInteger.ONE)) {
-
-                this.ui = ui;
-                return true;
-            }
-        }
-        return false;
     }
 
     private BigInteger GCD(BigInteger a, BigInteger b)
@@ -142,7 +120,7 @@ public class Decomposition
         return r.intValue();
     }
 
-    private BigInteger stepTwo(BigInteger a, BigInteger p)
+    private BigInteger sqrt(BigInteger a, BigInteger p)
     {
         a = a.add(p);
         if (p.mod(BigInteger.valueOf(4)).equals(BigInteger.valueOf(3)))
@@ -194,5 +172,60 @@ public class Decomposition
         }
 
         return r;
+    }
+
+    void result(BigInteger x1, BigInteger x2, BigInteger p, int step, boolean used)
+    {
+        int index = 0;
+        BigInteger u = step == 1 ? x1 : x2;
+        ArrayList<BigInteger> valuesForU = new ArrayList<>();
+        valuesForU.add(u);
+        ArrayList<BigInteger> valuesForM = new ArrayList<>();
+        valuesForM.add(p);
+        do {
+            BigInteger m1 = valuesForU.get(index).pow(2).add(BigInteger.ONE);
+            boolean ok1 = m1.mod(valuesForM.get(index)).equals(BigInteger.ZERO);
+            m1 = m1.divide(valuesForM.get(index));
+            boolean ok2 = m1.equals(BigInteger.ZERO);
+            if (!ok1 || ok2) {
+                if (!used) {
+                    result(x1, x2, p, 0, true);
+                } else {
+                    this.a = null;
+                    this.b = null;
+                    return;
+                }
+            }
+            BigInteger min1 = valuesForU.get(index).mod(m1);
+            BigInteger min2 = m1.subtract(valuesForU.get(index)).mod(m1);
+            valuesForU.add(min1.min(min2));
+            valuesForM.add(m1);
+            index++;
+        } while (!valuesForM.get(index).equals(BigInteger.ONE));
+        BigInteger a = valuesForU.get(index - 1);
+        BigInteger b = BigInteger.ONE;
+        index--;
+        while (index != 0) {
+            BigInteger top = valuesForU.get(index - 1).multiply(a);
+            BigInteger topNegative = top.negate();
+            top = top.add(BigInteger.ONE.multiply(b));
+            topNegative = topNegative.add(BigInteger.ONE.multiply(b));
+            BigInteger top2 = a.negate();
+            BigInteger top2Negate = top2;
+            top2 = top2.add(valuesForU.get(index - 1).multiply(b));
+            top2Negate = top2Negate.subtract(valuesForU.get(index - 1).multiply(b));
+            BigInteger bottom = a.pow(2).add(BigInteger.ONE.multiply(b.pow(2)));
+            if (top.mod(bottom).equals(BigInteger.ZERO))
+                a = top.divide(bottom);
+            else
+                a = topNegative.divide(bottom);
+            if (top2.mod(bottom).equals(BigInteger.ZERO))
+                b = top2.divide(bottom);
+            else
+                b = top2Negate.divide(bottom);
+            index--;
+        }
+        this.a = a;
+        this.b = b;
     }
 }
