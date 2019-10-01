@@ -1,6 +1,8 @@
 package com.company;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -39,6 +41,8 @@ public class Main
         {
             if (!check5(prime))
                 continue;
+            if (check6(prime))
+                break;
         }
 
     }
@@ -127,4 +131,49 @@ public class Main
 
         return false;
     }
+
+    static boolean check6(PrimeNumber prim)
+    {
+        BigInteger p = prim.getPrimeNumber();
+        Pair point0 = new Pair(x0, y0);
+        List<Pair> points = new ArrayList<>();
+        points.add(point0);
+        Pair point = point0;
+
+        for (BigInteger i = BigInteger.ZERO; !i.equals(N); i = i.add(BigInteger.ONE))
+        {
+            point = sum(point, point0, p);
+            if (point.x.equals(BigInteger.ZERO) && point.y.equals(BigInteger.ZERO))
+                return true;
+            if (points.contains(point))
+                return true;
+            points.add(point);
+        }
+
+        return false;
+    }
+
+    static Pair sum(Pair x1y1, Pair x2y2, BigInteger p)
+    {
+        BigInteger x1 = x1y1.x, y1 = x1y1.y, x2 = x2y2.x, y2 = x2y2.y, alph;
+        if (x1.equals(BigInteger.ZERO) && y1 .equals(BigInteger.ZERO))
+            return new Pair(BigInteger.ZERO, BigInteger.ZERO);
+
+    /*    System.out.println(x1 + "   " + x2 + "   " + y1 + "   " + y2);*/
+        if (x1.equals(x2))
+        {
+            if (y1.equals(BigInteger.ZERO))
+                return new Pair(BigInteger.ZERO, BigInteger.ZERO);
+            else
+                alph = ((x1.multiply(x1).multiply(BigInteger.valueOf(3)).add(A)).multiply((BigInteger.TWO.multiply(y1)).modInverse(p))).mod(p);
+        }
+        else
+            alph = ((y2.subtract(y1)).multiply((x2.subtract(x1)).modInverse(p))).mod(p);
+
+        BigInteger x3 = (alph.multiply(alph).subtract(x1).subtract(x2)).mod(p),
+                y3 = ((x1.subtract(x3)).multiply(alph).subtract(y1)).mod(p);
+
+        return new Pair(x3, y3);
+    }
+
 }
