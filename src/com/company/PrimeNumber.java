@@ -14,6 +14,8 @@ public class PrimeNumber
         {
             primeNumber = bitInNumber(l, true);
         }
+
+        System.out.println("Простое число, которое удовлетворяет условию - " + primeNumber);
     }
 
     public BigInteger getPrimeNumber()
@@ -60,7 +62,7 @@ public class PrimeNumber
         return number;
     }
 
-    private boolean checkPrime(BigInteger p, int l)
+    public boolean checkPrime(BigInteger p, int l)
     {
         BigInteger s = BigInteger.valueOf(0), n = p;
 
@@ -137,10 +139,5 @@ public class PrimeNumber
 
         res = res.mod(m);
         return res;
-    }
-
-    public String toString(PrimeNumber p)
-    {
-        return p.primeNumber.toString();
     }
 }

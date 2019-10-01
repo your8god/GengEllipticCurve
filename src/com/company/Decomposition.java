@@ -7,7 +7,17 @@ import static com.company.PrimeNumber.powMod;
 
 public class Decomposition
 {
-    BigInteger a, b;
+    private BigInteger a, b;
+
+    public BigInteger getA()
+    {
+        return a;
+    }
+
+    public BigInteger getB()
+    {
+        return b;
+    }
 
     Decomposition(int D, BigInteger p)
     {
@@ -16,10 +26,10 @@ public class Decomposition
         {
             BigInteger x1 = sqrt(BigInteger.valueOf(D), p),
                     x2 = p.subtract(x1);
-            System.out.println(x1 + "  " + x2);
+            System.out.println("Корни из -1 в поле " + p + ": " + x1 + " и " + x2);
 
             result(x1, x2, p, 1, false);
-            System.out.println(a + "   " + b);
+            System.out.println("Разложение р на простые множители в кольце: " + a + " и " + b);
         }
     }
 
@@ -178,34 +188,47 @@ public class Decomposition
     {
         int index = 0;
         BigInteger u = step == 1 ? x1 : x2;
+
         ArrayList<BigInteger> valuesForU = new ArrayList<>();
         valuesForU.add(u);
         ArrayList<BigInteger> valuesForM = new ArrayList<>();
         valuesForM.add(p);
-        do {
+
+        do
+        {
             BigInteger m1 = valuesForU.get(index).pow(2).add(BigInteger.ONE);
             boolean ok1 = m1.mod(valuesForM.get(index)).equals(BigInteger.ZERO);
             m1 = m1.divide(valuesForM.get(index));
             boolean ok2 = m1.equals(BigInteger.ZERO);
-            if (!ok1 || ok2) {
-                if (!used) {
+
+            if (!ok1 || ok2)
+            {
+                if (!used)
+                {
                     result(x1, x2, p, 0, true);
-                } else {
+                }
+                else
+                    {
                     this.a = null;
                     this.b = null;
                     return;
-                }
+                    }
             }
+
             BigInteger min1 = valuesForU.get(index).mod(m1);
             BigInteger min2 = m1.subtract(valuesForU.get(index)).mod(m1);
             valuesForU.add(min1.min(min2));
             valuesForM.add(m1);
             index++;
-        } while (!valuesForM.get(index).equals(BigInteger.ONE));
+        }
+        while (!valuesForM.get(index).equals(BigInteger.ONE));
+
         BigInteger a = valuesForU.get(index - 1);
         BigInteger b = BigInteger.ONE;
         index--;
-        while (index != 0) {
+
+        while (index != 0)
+        {
             BigInteger top = valuesForU.get(index - 1).multiply(a);
             BigInteger topNegative = top.negate();
             top = top.add(BigInteger.ONE.multiply(b));
@@ -215,6 +238,7 @@ public class Decomposition
             top2 = top2.add(valuesForU.get(index - 1).multiply(b));
             top2Negate = top2Negate.subtract(valuesForU.get(index - 1).multiply(b));
             BigInteger bottom = a.pow(2).add(BigInteger.ONE.multiply(b.pow(2)));
+
             if (top.mod(bottom).equals(BigInteger.ZERO))
                 a = top.divide(bottom);
             else
@@ -223,6 +247,7 @@ public class Decomposition
                 b = top2.divide(bottom);
             else
                 b = top2Negate.divide(bottom);
+
             index--;
         }
         this.a = a;
