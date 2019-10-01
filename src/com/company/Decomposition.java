@@ -33,7 +33,7 @@ public class Decomposition
         }
     }
 
-    private BigInteger GCD(BigInteger a, BigInteger b)
+    private static BigInteger GCD(BigInteger a, BigInteger b)
     {
         BigInteger g = BigInteger.ONE;
         while (a.mod(BigInteger.TWO).equals(BigInteger.ZERO) &&
@@ -80,7 +80,7 @@ public class Decomposition
         return res;
     }
 
-    private int legendreSymbol(BigInteger a, BigInteger b)
+    public static int legendreSymbol(BigInteger a, BigInteger b)
     {
         BigInteger aa = BigInteger.ONE;
         if (a.compareTo(BigInteger.ZERO) == -1)
