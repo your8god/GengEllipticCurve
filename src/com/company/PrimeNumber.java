@@ -15,7 +15,7 @@ public class PrimeNumber
             primeNumber = bitInNumber(l, true);
         }
 
-        System.out.println("Простое число, которое удовлетворяет условию - " + primeNumber);
+        //System.out.println("Простое число, которое удовлетворяет условию - " + primeNumber);
     }
 
     public BigInteger getPrimeNumber()

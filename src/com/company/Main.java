@@ -1,5 +1,7 @@
 package com.company;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,8 +14,7 @@ public class Main
     r = null;
 
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) throws IOException {
         Scanner in = new Scanner(System.in);
 
         System.out.print("Введите длину характеристики поля l: ");
@@ -45,6 +46,29 @@ public class Main
                 break;
         }
 
+        int j = N.divide(r).intValue();
+
+        Pair Q = new Pair(x0, y0);
+        for (int i = 1; i < j; i++)
+        {
+            Q = sum(Q, new Pair(x0, y0), prime.getPrimeNumber());
+        }
+
+        System.out.println("Результат (р, А, Q, r): (" + prime.getPrimeNumber() + ", " + A + ", (" + Q.x + ", " + Q.y + "), " + r + ")");
+
+        FileWriter out = new FileWriter("output.txt");
+        out.write("(" + Q.x + "," + Q.y + ")\n");
+        List<Pair> points = new ArrayList<>();
+        Pair point = new Pair(Q.x, Q.y);
+        points.add(point);
+        for (BigInteger i = BigInteger.ONE; !i.equals(N); i = i.add(BigInteger.ONE))
+        {
+            point = sum(point, Q, prime.getPrimeNumber());
+            if (points.size() > 3 && points.get(points.size() - 2).equals(point))
+                break;
+            points.add(point);out.write("(" + point.x + ";" + point.y + ")\n");
+        }
+        out.close();
     }
 
     static boolean check3(PrimeNumber prime, Decomposition dec, int l)
@@ -140,7 +164,7 @@ public class Main
         points.add(point0);
         Pair point = point0;
 
-        for (BigInteger i = BigInteger.ZERO; !i.equals(N); i = i.add(BigInteger.ONE))
+        for (BigInteger i = BigInteger.ONE; !i.equals(N); i = i.add(BigInteger.ONE))
         {
             point = sum(point, point0, p);
             if (point.x.equals(BigInteger.ZERO) && point.y.equals(BigInteger.ZERO))

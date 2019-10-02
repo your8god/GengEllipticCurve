@@ -26,10 +26,10 @@ public class Decomposition
         {
             BigInteger x1 = sqrt(BigInteger.valueOf(D), p),
                     x2 = p.subtract(x1);
-            System.out.println("Корни из -1 в поле " + p + ": " + x1 + " и " + x2);
+           // System.out.println("Корни из -1 в поле " + p + ": " + x1 + " и " + x2);
 
             result(x1, x2, p, 1, false);
-            System.out.println("Разложение р на простые множители в кольце: " + a + " и " + b);
+            //System.out.println("Разложение р на простые множители в кольце: " + a + " и " + b);
         }
     }
 
