@@ -56,19 +56,30 @@ public class Main
 
         System.out.println("Результат (р, А, Q, r): (" + prime.getPrimeNumber() + ", " + A + ", (" + Q.x + ", " + Q.y + "), " + r + ")");
 
-        FileWriter out = new FileWriter("output.txt");
+        //блок записи координат в файлы
+        FileWriter out = new FileWriter("output.txt"),
+        xOut = new FileWriter("x.txt"),
+        yOut = new FileWriter("y.txt");
         out.write("(" + Q.x + "," + Q.y + ")\n");
+        xOut.write(Q.x + "\n");
+        yOut.write(Q.y + "\n");
         List<Pair> points = new ArrayList<>();
         Pair point = new Pair(Q.x, Q.y);
         points.add(point);
         for (BigInteger i = BigInteger.ONE; !i.equals(N); i = i.add(BigInteger.ONE))
         {
             point = sum(point, Q, prime.getPrimeNumber());
-            if (points.size() > 3 && points.get(points.size() - 2).equals(point))
+            if (points.size() > 3 && points.get(points.size() - 2).x.equals(point.x) && points.get(points.size() - 2).y.equals(point.y))
                 break;
-            points.add(point);out.write("(" + point.x + ";" + point.y + ")\n");
+            points.add(point);
+
+            out.write("(" + point.x + "," + point.y + ")\n");
+            xOut.write(point.x + "\n");
+            yOut.write(point.y + "\n");
         }
         out.close();
+        xOut.close();
+        yOut.close();
     }
 
     static boolean check3(PrimeNumber prime, Decomposition dec, int l)
