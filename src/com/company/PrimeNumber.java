@@ -1,6 +1,7 @@
 package com.company;
 
 import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.Random;
 
 public class PrimeNumber
@@ -23,7 +24,7 @@ public class PrimeNumber
         return this.primeNumber;
     }
 
-    private int[] gengPrimeNumberBit(int l, boolean flag)
+    public int[] gengPrimeNumberBit(int l, boolean flag)
     {
         Random bit = new Random();
 
@@ -43,7 +44,7 @@ public class PrimeNumber
         return primeNumberBit;
     }
 
-    private BigInteger bitInNumber(int l, boolean flag)
+    public BigInteger bitInNumber(int l, boolean flag)
     {
         BigInteger mod = BigInteger.ONE;
         for (int i = 0; i < l; i++)
@@ -79,7 +80,7 @@ public class PrimeNumber
         }
 
         Random random = new Random();
-        for (int i = 0; i < 25; i++)
+        for (int i = 0; i < 35; i++)
         {
             BigInteger a = bitInNumber((random.nextInt(l - 2 + 1) + 2), false);
             BigInteger x = powMod(a, t, n);
@@ -139,5 +140,10 @@ public class PrimeNumber
 
         res = res.mod(m);
         return res;
+    }
+
+    BigInteger getRandomBigInteger(int lengthOfP, BigInteger p) {
+        return new BigInteger(new Random().nextInt(lengthOfP + 1) + lengthOfP / 2, 200, new
+                SecureRandom()).mod(p);
     }
 }
