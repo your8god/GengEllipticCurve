@@ -66,20 +66,18 @@ public class Main
         List<Pair> points = new ArrayList<>();
         Pair point = new Pair(Q.x, Q.y);
         points.add(point);
-        for (BigInteger i = BigInteger.TWO; !i.equals(N); i = i.add(BigInteger.ONE))
+        for (BigInteger i = BigInteger.TWO; !i.equals(r); i = i.add(BigInteger.ONE))
         {
             point = sum(point, Q, prime.getPrimeNumber());
-            /*if (points.size() > 3 && points.get(points.size() - 2).x.equals(point.x) && points.get(points.size() - 2).y.equals(point.y))
-                break;*/
             points.add(point);
 
-            if (point == null)
+            /*if (point == null)
                 break;
-            else {
-                out.write("(" + point.x + "," + point.y + ")\n");
-                xOut.write(point.x + "\n");
-                yOut.write(point.y + "\n");
-            }
+            else {*/
+            out.write("(" + point.x + "," + point.y + ")\n");
+            xOut.write(point.x + "\n");
+            yOut.write(point.y + "\n");
+
         }
         out.close();
         xOut.close();
