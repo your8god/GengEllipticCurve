@@ -77,7 +77,7 @@ public class Main
             /*if (point == null)
                 break;
             else {*/
-            out.write("(" + point.x + "," + point.y + ")\n");
+            out.write(point.x + " " + point.y + "\n");
             xOut.write(point.x + "\n");
             yOut.write(point.y + "\n");
 
