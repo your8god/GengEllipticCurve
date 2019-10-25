@@ -55,6 +55,9 @@ public class Main
         }
 
         System.out.println("Результат (р, А, Q, r): (" + prime.getPrimeNumber() + ", " + A + ", (" + Q.x + ", " + Q.y + "), " + r + ")");
+        FileWriter out1 = new FileWriter("key.txt");
+        out1.write(prime.getPrimeNumber() + "\n" + A + "\n" + Q.x + " " + Q.y + "\n" + r);
+        out1.close();
 
         //блок записи координат в файлы
         FileWriter out = new FileWriter("output.txt"),
