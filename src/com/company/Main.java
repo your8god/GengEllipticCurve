@@ -63,7 +63,7 @@ public class Main
         FileWriter out = new FileWriter("output.txt"),
         xOut = new FileWriter("x.txt"),
         yOut = new FileWriter("y.txt");
-        out.write("(" + Q.x + "," + Q.y + ")\n");
+        out.write(Q.x + " " + Q.y + "\n");
         xOut.write(Q.x + "\n");
         yOut.write(Q.y + "\n");
         List<Pair> points = new ArrayList<>();
